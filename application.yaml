@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/zannujulius/argo-cd-demo.git"
+    targetRevision: HEAD
+    path: dev # path to the k8s manifests deployment and service yaml files
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: myapp # namespace where the application will be deployed
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
